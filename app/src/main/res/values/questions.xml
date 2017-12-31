@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. Krzysztof Nowak "knowaknet"
+  -->
+
+<resources>
+    <string name="australia">Stolicą Australii jest Canberra.</string>
+    <string name="oceans">Ocean Spokojny jest większy niż Ocean Atlantycki.</string>
+    <string name="mideast">Kanał Sueski łączy Morze Czerwone z Oceanem Indyjskim.</string>
+    <string name="africa">Źródło rzeki Nil znajduje się w Egipcie.</string>
+    <string name="americas">Amazonka to najdłuższa rzeka obu Ameryk.</string>
+    <string name="asia">Jezioro Bajkał to najstarsze i najgłębsze jezioro słodkowodne na świecie.</string>
+</resources>
