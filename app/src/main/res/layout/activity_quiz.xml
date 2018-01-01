@@ -35,20 +35,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageButton
             android:id="@+id/btn_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_label_previous"
-            android:drawableLeft="@drawable/arrow_left"
-            android:drawablePadding="4dp"/>
-        <Button
+            android:src="@drawable/arrow_left"
+            android:contentDescription="@string/btn_hint_next"/>
+        <ImageButton
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_label_next"
-            android:drawableRight="@drawable/arrow_right"
-            android:drawablePadding="4dp"/>
+            android:src="@drawable/arrow_right"
+            android:contentDescription="@string/btn_hint_next"/>
 
     </LinearLayout>
 

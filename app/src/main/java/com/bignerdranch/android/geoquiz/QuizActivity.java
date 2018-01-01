@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +17,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mBtnTrue;
     private Button mBtnFalse;
-    private Button mBtnNext;
-    private Button mBtnPrev;
+    private ImageButton mBtnNext;
+    private ImageButton mBtnPrev;
     private TextView mQuestionTextView;
     private Question[] mQuestions;
     private int mCurrentIndexQuestion = 0;
