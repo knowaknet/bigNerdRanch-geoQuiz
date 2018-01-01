@@ -3,6 +3,7 @@
     <string name="btn_label_true">Prawda</string>
     <string name="btn_label_false">Fałsz</string>
     <string name="btn_label_next">Następne</string>
+    <string name="btn_label_previous">Poprzednie</string>
     <string name="msg_correct_answer">Poprawna odpowiedź!</string>
     <string name="msg_incorrect_answer">Niepoprawna odpowiedź!</string>
 </resources>
