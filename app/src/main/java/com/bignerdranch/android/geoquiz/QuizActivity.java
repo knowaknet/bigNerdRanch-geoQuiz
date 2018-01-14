@@ -6,6 +6,7 @@ package com.bignerdranch.android.geoquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final String C = QuizActivity.class.getName();
+    private static final String KEY_CURRENT_INDEX = "index";
 
     private Button mBtnTrue;
     private Button mBtnFalse;
@@ -26,12 +29,71 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(C, ">> ON CREATE");
+
         setContentView(R.layout.activity_quiz);
 
         setupWidgets();
         setupWidgetsEvents();
+        loadState(savedInstanceState);
         loadQuestions();
     }
+
+    /* I don't need it, just leave it here as it is in book; I'm not sure whether I will need it in app/next chapters in book.
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(C, ">> ON START");
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        Log.d(C, ">> ON RESUME FRAGMENTS");
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Log.d(C, ">> ON POST RESUME");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(C, ">> ON PAUSE");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(C, ">> ON STOP");
+    }
+    */
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(C, ">> ON SAVE INSTANCE");
+
+        outState.putInt(KEY_CURRENT_INDEX, mCurrentIndexQuestion);
+    }
+
+    private void loadState(Bundle savedInstanceState){
+        if(savedInstanceState == null)
+            return;
+
+        mCurrentIndexQuestion = savedInstanceState.getInt(KEY_CURRENT_INDEX, 0);
+    }
+
+    /*
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(C, ">> ON DESTROY");
+    }
+
+    */
 
     private void setupWidgets(){
         mBtnTrue = findViewById(R.id.btn_true);
@@ -100,8 +162,6 @@ public class QuizActivity extends AppCompatActivity {
                 new Question(R.string.americas, true),
                 new Question(R.string.asia, true)
         };
-
-        mCurrentIndexQuestion = 0;
         reloadActiveQuestion();
     }
 
