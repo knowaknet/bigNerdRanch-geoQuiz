@@ -188,5 +188,23 @@ public class QuizActivity extends AppCompatActivity {
             mBtnFalse.setEnabled(true);
         }
 
+        summarizeQuiz();
+    }
+
+    private void summarizeQuiz(){
+        int correctAnswers = 0;
+        for (Question q : mQuestions) {
+            if (q.getNoticedValidAnswer() == null)
+                return; // break simmarize, quiz is not completed
+
+            correctAnswers += q.getNoticedValidAnswer() ? 1 : 0;
+        }
+
+        int percentageResult = correctAnswers * 100 / mQuestions.length;
+        String messageFormat = this.getString(R.string.msg_quiz_result);
+        String quizResultMsg = String.format(messageFormat, percentageResult);
+        Toast msg = Toast.makeText(QuizActivity.this, quizResultMsg, Toast.LENGTH_LONG);
+        msg.setGravity(Gravity.BOTTOM, 0, 100);
+        msg.show();
     }
 }
