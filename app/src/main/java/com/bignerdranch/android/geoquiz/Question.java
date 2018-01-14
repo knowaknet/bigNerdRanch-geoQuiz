@@ -11,6 +11,7 @@ package com.bignerdranch.android.geoquiz;
 public class Question {
     private int mTextResId;
     private boolean mIsAnswerTrue;
+    private Boolean mNoticedValidAnswer;
 
     public Question(int textResId, boolean isAnswerTrue) {
         this.mTextResId = textResId;
@@ -31,5 +32,13 @@ public class Question {
 
     public void setAnswerTrue(boolean answerTrue) {
         mIsAnswerTrue = answerTrue;
+    }
+
+    public Boolean getNoticedValidAnswer() {
+        return mNoticedValidAnswer;
+    }
+
+    public void setNoticedValidAnswer(Boolean noticedValidAnswer) {
+        mNoticedValidAnswer = noticedValidAnswer;
     }
 }

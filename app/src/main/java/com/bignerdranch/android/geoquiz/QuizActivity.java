@@ -108,6 +108,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(true);
+                updateLockAnswerState();
             }
         });
 
@@ -115,6 +116,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
+                updateLockAnswerState();
             }
         });
 
@@ -123,6 +125,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mCurrentIndexQuestion = (mCurrentIndexQuestion + 1) %  mQuestions.length;
                 reloadActiveQuestion();
+                updateLockAnswerState();
             }
         };
 
@@ -132,18 +135,24 @@ public class QuizActivity extends AppCompatActivity {
         mBtnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndexQuestion = (mCurrentIndexQuestion - 1) % mQuestions.length;
+                mCurrentIndexQuestion =  (mCurrentIndexQuestion - 1) % mQuestions.length;
+                if(mCurrentIndexQuestion < 0)
+                    mCurrentIndexQuestion = mQuestions.length -1;
                 reloadActiveQuestion();
+                updateLockAnswerState();
             }
         });
     }
 
     private void checkAnswer(boolean userPressedTrue){
-        boolean validAnswer = mQuestions[mCurrentIndexQuestion].isAnswerTrue();
+        Question question = mQuestions[mCurrentIndexQuestion];
+        boolean validAnswer = question.isAnswerTrue();
         if(userPressedTrue == validAnswer){
             showAnswerResult(R.string.msg_correct_answer);
+            question.setNoticedValidAnswer(true);
         } else {
             showAnswerResult(R.string.msg_incorrect_answer);
+            question.setNoticedValidAnswer(false);
         }
     }
 
@@ -168,5 +177,16 @@ public class QuizActivity extends AppCompatActivity {
     private void reloadActiveQuestion(){
         int activeQuestionRId = mQuestions[mCurrentIndexQuestion].getTextResId();
         mQuestionTextView.setText(activeQuestionRId);
+    }
+
+    private void updateLockAnswerState(){
+        if(mQuestions[mCurrentIndexQuestion].getNoticedValidAnswer() != null) {
+            mBtnTrue.setEnabled(false);
+            mBtnFalse.setEnabled(false);
+        } else {
+            mBtnTrue.setEnabled(true);
+            mBtnFalse.setEnabled(true);
+        }
+
     }
 }
