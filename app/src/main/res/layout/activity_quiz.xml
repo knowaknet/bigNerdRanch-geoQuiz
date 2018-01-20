@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_left"
-            android:contentDescription="@string/btn_hint_next"/>
+            android:contentDescription="@string/btn_hint_previous"/>
         <ImageButton
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
