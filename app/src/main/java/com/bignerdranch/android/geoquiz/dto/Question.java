@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2017. Krzysztof Nowak "knowaknet"
+ * Copyright (c) 2018. Krzysztof Nowak "knowaknet"
  */
 
-package com.bignerdranch.android.geoquiz;
+package com.bignerdranch.android.geoquiz.dto;
 
 /**
  * Created by knowaknet on 30.12.2017.

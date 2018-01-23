@@ -4,6 +4,7 @@
 
 package com.bignerdranch.android.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +15,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bignerdranch.android.geoquiz.dto.Question;
+
 public class QuizActivity extends AppCompatActivity {
     private static final String C = QuizActivity.class.getName();
     private static final String KEY_CURRENT_INDEX = "index";
 
     private Button mBtnTrue;
     private Button mBtnFalse;
+    private Button mBtnGoCheat;
     private ImageButton mBtnNext;
     private ImageButton mBtnPrev;
     private TextView mQuestionTextView;
@@ -98,6 +102,7 @@ public class QuizActivity extends AppCompatActivity {
     private void setupWidgets(){
         mBtnTrue = findViewById(R.id.btn_true);
         mBtnFalse = findViewById(R.id.btn_false);
+        mBtnGoCheat = findViewById(R.id.btn_go_cheat);
         mBtnNext = findViewById(R.id.btn_next);
         mBtnPrev = findViewById(R.id.btn_previous);
         mQuestionTextView = findViewById(R.id.question_text_view);
@@ -140,6 +145,16 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndexQuestion = mQuestions.length -1;
                 reloadActiveQuestion();
                 updateLockAnswerState();
+            }
+        });
+
+        mBtnGoCheat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cheatIntent = CheatActivity.newIntent(
+                        QuizActivity.this,
+                        mQuestions[mCurrentIndexQuestion].isAnswerTrue());
+                startActivity(cheatIntent);
             }
         });
     }

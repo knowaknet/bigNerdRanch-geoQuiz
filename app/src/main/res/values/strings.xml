@@ -7,4 +7,8 @@
     <string name="msg_correct_answer">Poprawna odpowiedź!</string>
     <string name="msg_incorrect_answer">Niepoprawna odpowiedź!</string>
     <string name="msg_quiz_result">Twój wtynik to %d%%!</string>
+    <string name="msg_warning_text">Czy na pewno chcesz to zrobić?</string>
+    <string name="btn_label_show_answer">Pokaż odpowiedź</string>
+    <string name="btn_label_cheat">Podpowiedź</string>
+    <string name="judgment_toast">Oszukiwanie jest złe!</string>
 </resources>
