@@ -30,6 +30,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mBtnPrev;
     private TextView mQuestionTextView;
     private Question[] mQuestions;
+    private Boolean[] mCheatingDiary;
     private int mCurrentIndexQuestion = 0;
     private boolean mUserIsCheater = false;
 
@@ -169,7 +170,7 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPressedTrue){
         Question question = mQuestions[mCurrentIndexQuestion];
         boolean validAnswer = question.isAnswerTrue();
-        if(mUserIsCheater){
+        if(mUserIsCheater || isActiveQuestionHasBeenCheated(mCurrentIndexQuestion)){
             showAnswerResult(R.string.judgment_toast);
         } else if(userPressedTrue == validAnswer){
             showAnswerResult(R.string.msg_correct_answer);
@@ -195,6 +196,7 @@ public class QuizActivity extends AppCompatActivity {
                 new Question(R.string.americas, true),
                 new Question(R.string.asia, true)
         };
+        mCheatingDiary = new Boolean[mQuestions.length];
         reloadActiveQuestion();
     }
 
@@ -242,8 +244,13 @@ public class QuizActivity extends AppCompatActivity {
         if(requestCode == CHEAT_ACTIVITY_REQUEST_CODE){
             if(data != null) {
                 mUserIsCheater = CheatActivity.wasAnswetShown(data);
+                mCheatingDiary[mCurrentIndexQuestion] = mUserIsCheater;
             }
-
         }
+    }
+
+    private boolean isActiveQuestionHasBeenCheated(int index){
+        Boolean hasBeenCheated = mCheatingDiary[index];
+        return hasBeenCheated != null ? hasBeenCheated : false;
     }
 }
