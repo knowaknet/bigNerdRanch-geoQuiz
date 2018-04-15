@@ -20,6 +20,8 @@ import com.bignerdranch.android.geoquiz.dto.Question;
 public class QuizActivity extends AppCompatActivity {
     private static final String C = QuizActivity.class.getName();
     private static final String KEY_CURRENT_INDEX = "index";
+    private static final String KEY_CURRENT_USER_CHEATING_STATE = "cheater";
+    private static final int CHEAT_ACTIVITY_REQUEST_CODE = 0;
 
     private Button mBtnTrue;
     private Button mBtnFalse;
@@ -29,6 +31,7 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private Question[] mQuestions;
     private int mCurrentIndexQuestion = 0;
+    private boolean mUserIsCheater = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(C, ">> ON SAVE INSTANCE");
 
         outState.putInt(KEY_CURRENT_INDEX, mCurrentIndexQuestion);
+        outState.putBoolean(KEY_CURRENT_USER_CHEATING_STATE, mUserIsCheater);
     }
 
     private void loadState(Bundle savedInstanceState){
@@ -88,6 +92,7 @@ public class QuizActivity extends AppCompatActivity {
             return;
 
         mCurrentIndexQuestion = savedInstanceState.getInt(KEY_CURRENT_INDEX, 0);
+        mUserIsCheater = savedInstanceState.getBoolean(KEY_CURRENT_USER_CHEATING_STATE, false);
     }
 
     /*
@@ -131,6 +136,7 @@ public class QuizActivity extends AppCompatActivity {
                 mCurrentIndexQuestion = (mCurrentIndexQuestion + 1) %  mQuestions.length;
                 reloadActiveQuestion();
                 updateLockAnswerState();
+                mUserIsCheater = false;
             }
         };
 
@@ -145,6 +151,7 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndexQuestion = mQuestions.length -1;
                 reloadActiveQuestion();
                 updateLockAnswerState();
+                mUserIsCheater = false;
             }
         });
 
@@ -154,7 +161,7 @@ public class QuizActivity extends AppCompatActivity {
                 Intent cheatIntent = CheatActivity.newIntent(
                         QuizActivity.this,
                         mQuestions[mCurrentIndexQuestion].isAnswerTrue());
-                startActivity(cheatIntent);
+                startActivityForResult(cheatIntent, CHEAT_ACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -162,7 +169,9 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPressedTrue){
         Question question = mQuestions[mCurrentIndexQuestion];
         boolean validAnswer = question.isAnswerTrue();
-        if(userPressedTrue == validAnswer){
+        if(mUserIsCheater){
+            showAnswerResult(R.string.judgment_toast);
+        } else if(userPressedTrue == validAnswer){
             showAnswerResult(R.string.msg_correct_answer);
             question.setNoticedValidAnswer(true);
         } else {
@@ -221,5 +230,20 @@ public class QuizActivity extends AppCompatActivity {
         Toast msg = Toast.makeText(QuizActivity.this, quizResultMsg, Toast.LENGTH_LONG);
         msg.setGravity(Gravity.BOTTOM, 0, 100);
         msg.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != RESULT_OK)
+            return;
+
+        if(requestCode == CHEAT_ACTIVITY_REQUEST_CODE){
+            if(data != null) {
+                mUserIsCheater = CheatActivity.wasAnswetShown(data);
+            }
+
+        }
     }
 }
