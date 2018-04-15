@@ -16,10 +16,13 @@ public class CheatActivity extends AppCompatActivity {
 
     private static final String EXTRA_ANSWER_IS_TRUE = "com.bignerdranch.android.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_HAS_BEEN_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown";
+    private static final String STATE_KEY_ANSWER_HAS_BEEN_SHOWN = "shown";
 
     private boolean mAnswerIsTrue;
     private Button mShowAnswer;
     private TextView mAnswer;
+
+    private boolean mAnswerHasBeenShown = false;
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue){
         Intent cheatIntent = new Intent(packageContext, CheatActivity.class);
@@ -33,8 +36,24 @@ public class CheatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cheat);
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
 
+        loadState(savedInstanceState);
         setupWidgets();
         setupWidgetEvents();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(STATE_KEY_ANSWER_HAS_BEEN_SHOWN, mAnswerHasBeenShown);
+    }
+
+    private void loadState(Bundle savedInstanceState) {
+        if(savedInstanceState == null)
+            return;
+
+        mAnswerHasBeenShown = savedInstanceState.getBoolean(STATE_KEY_ANSWER_HAS_BEEN_SHOWN, false);
+        setAnswerShownResult(mAnswerHasBeenShown);
     }
 
     private void setupWidgets() {
@@ -53,9 +72,12 @@ public class CheatActivity extends AppCompatActivity {
     }
 
     private void setAnswerShownResult(boolean whetherUserShownAnswer) {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_ANSWER_HAS_BEEN_SHOWN, whetherUserShownAnswer);
-        setResult(RESULT_OK, intent);
+        if(whetherUserShownAnswer) {
+            mAnswerHasBeenShown = true;
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_ANSWER_HAS_BEEN_SHOWN, whetherUserShownAnswer);
+            setResult(RESULT_OK, intent);
+        }
     }
 
     public static boolean wasAnswetShown(Intent result){
