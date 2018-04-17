@@ -243,7 +243,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if(requestCode == CHEAT_ACTIVITY_REQUEST_CODE){
             if(data != null) {
-                mUserIsCheater = CheatActivity.wasAnswetShown(data);
+                mUserIsCheater = CheatActivity.wasAnswerShown(data);
                 mCheatingDiary[mCurrentIndexQuestion] = mUserIsCheater;
             }
         }

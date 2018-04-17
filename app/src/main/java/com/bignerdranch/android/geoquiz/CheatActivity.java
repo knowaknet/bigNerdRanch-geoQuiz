@@ -4,11 +4,15 @@
 
 package com.bignerdranch.android.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -67,6 +71,25 @@ public class CheatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAnswer.setText( mAnswerIsTrue ? R.string.btn_label_true : R.string.btn_label_false );
                 setAnswerShownResult(true);
+
+                // animation test; require API 21
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = mShowAnswer.getWidth() / 2;
+                    int cy = mShowAnswer.getHeight() / 2;
+                    float radius = mShowAnswer.getWidth();
+
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mShowAnswer.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    anim.start();
+                } else {
+                    mShowAnswer.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
@@ -75,12 +98,13 @@ public class CheatActivity extends AppCompatActivity {
         if(whetherUserShownAnswer) {
             mAnswerHasBeenShown = true;
             Intent intent = new Intent();
+            //noinspection ConstantConditions
             intent.putExtra(EXTRA_ANSWER_HAS_BEEN_SHOWN, whetherUserShownAnswer);
             setResult(RESULT_OK, intent);
         }
     }
 
-    public static boolean wasAnswetShown(Intent result){
+    public static boolean wasAnswerShown(Intent result){
         return result.getBooleanExtra(EXTRA_ANSWER_HAS_BEEN_SHOWN, false);
     }
 }
